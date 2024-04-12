@@ -1,30 +1,36 @@
-import { StyleSheet, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, View, Text, TextInput } from 'react-native';
 
 const App = () => {
+  const [text, setText] = useState('');
+
   return (
-    <View style={{flex:1}}>
-    <View style={{width:50, height: 50, backgroundColor: 'blue'}}></View>
-    <View style={{flex:1, backgroundColor: 'red'}}></View>
-    <View style={{width: 100, height: 200, backgroundColor: 'green'}}></View>
-  </View>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.textInput}
+        value={text}
+        onChangeText={setText}
+        placeholder='Type Something Here'
+      />
+      <Text style={styles.textDisplay}>You wrote: {text}</Text>
+    </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row'  },
-  box1: {
-    flex:1,
-    backgroundColor: 'blue'
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  box2: {
-    flex:12,
-    backgroundColor: 'red'
+  textInput: {
+    width: '88%',
+    borderWidth: 1,
+    height: 50,
+    padding: 10
   },
-  box3: {
-    flex:5,
-    backgroundColor: 'green'
+  textDisplay: {
+    height: 50,
+    lineHeight: 50
   }
 });
 
