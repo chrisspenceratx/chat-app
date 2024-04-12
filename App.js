@@ -7,6 +7,11 @@ const App = () => {
     <Text style={styles.blue}>Hello World!</Text>
     <Text style={styles.bigRed}>How are you?</Text>
     <Text style={[styles.blue, styles.bigRed]}>I'm feeling blue!</Text>
+      {/*
+  add the following <View> after your Text Components
+  By the way, this is how you comment inside JSX!
+  \*/}
+  <View style={styles.box}></View>
   </View>
   );
 }
@@ -28,6 +33,12 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 30,
   },
+
+  box: {
+    width: 60,
+    height: 60,
+    backgroundColor: 'blue',
+  }
 
 });
 
