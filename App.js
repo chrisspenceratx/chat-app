@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const App = () => {
   return (
-    <View style={styles.container}>
+    <View>
     <Text style={styles.blue}>Hello World!</Text>
     <Text style={styles.bigRed}>How are you?</Text>
     <Text style={[styles.blue, styles.bigRed]}>I'm feeling blue!</Text>
@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
   },
 
   box: {
-    width: 60,
-    height: 60,
-    backgroundColor: 'blue',
-  }
+  width: 60,
+  height: 60,
+  backgroundColor: 'blue',
+}
 
 });
 
