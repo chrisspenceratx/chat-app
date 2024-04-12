@@ -1,17 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const App = () => {
   return (
-    <View>
-    <Text style={styles.blue}>Hello World!</Text>
-    <Text style={styles.bigRed}>How are you?</Text>
-    <Text style={[styles.blue, styles.bigRed]}>I'm feeling blue!</Text>
-      {/*
-  add the following <View> after your Text Components
-  By the way, this is how you comment inside JSX!
-  \*/}
-  <View style={styles.box}></View>
+    <View style={{flex:1}}>
+    <View style={{width:50, height: 50, backgroundColor: 'blue'}}></View>
+    <View style={{flex:1, backgroundColor: 'red'}}></View>
+    <View style={{width: 100, height: 200, backgroundColor: 'green'}}></View>
   </View>
   );
 }
@@ -19,27 +13,19 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'row'  },
+  box1: {
+    flex:1,
+    backgroundColor: 'blue'
   },
-
-  blue: {
-    color: 'blue',
-    fontWeight: '600',
+  box2: {
+    flex:12,
+    backgroundColor: 'red'
   },
-
-  bigRed: {
-    color: 'red',
-    fontSize: 30,
-  },
-
-  box: {
-  width: 60,
-  height: 60,
-  backgroundColor: 'blue',
-}
-
+  box3: {
+    flex:5,
+    backgroundColor: 'green'
+  }
 });
 
 export default App;
