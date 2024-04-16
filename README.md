@@ -5,5 +5,6 @@ This uses:
 - React Navigation
 - Expo
 
-To run locally:
+To run locally do one of these options:
 npm start (make sure you are using 16.9.0)
+npx expo start
