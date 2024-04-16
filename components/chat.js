@@ -10,7 +10,7 @@ const Chat = ({ route, navigation }) => {
 
   return (
     <View style={[styles.container, {backgroundColor: chatBackgroundColor}]}>
-      <Text>Hello Screen 2!</Text>
+      <Text>Welcome to the chat</Text>
     </View>
   );
 };
