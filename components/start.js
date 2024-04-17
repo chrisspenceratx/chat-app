@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, Image } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground } from "react-native";
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -7,15 +7,21 @@ const Start = ({ navigation }) => {
   const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
   const backgroundImage = require("../assets/BackgroundImage.png");
 
+  const handleSelection = (color) => {
+    const colorIndex = colors.indexOf(color);
+    const selectedColor = colors[colorIndex];
+    setChatBackgroundColor(selectedColor);
+  };
+
   return (
     <View style={styles.container}>
       {/* background image container: */}
       <ImageBackground source={backgroundImage} resizeMode="cover" style={styles.bkgrImg} >
 
-        {/* title for app */}
-        <Text style={styles.title}>Welcome!</Text>
+        {/* application title component: */}
+        <Text style={styles.title}>App Title</Text>
 
-        {/* input box, bacground color options, and button for chat */}
+        {/* White box containing input field, option to change chat background color, and button to enter chat */}
         <View style={styles.whiteBox}>
           <TextInput
             style={[styles.text, styles.textInput]}
@@ -29,17 +35,17 @@ const Start = ({ navigation }) => {
           {/* buttons to change the background color of the chat screen: */}
           <View style={styles.colorsBox}>
             {/* display a button for each color in the colors array: */}
-            {colors.map((color, index) => (
+            {colors.map((color) => (
               <TouchableOpacity 
-                key={index} 
+                key={color} 
                 style={[styles.colorOptions, { backgroundColor: color }]}
-                onPress={() => setChatBackgroundColor(color)}
+                onPress={() => handleSelection(color)}
               ></TouchableOpacity>
             ))}
           </View>
 
           {/* button to enter chat: */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Chat", {name: name, backgroundColor: chatBackgroundColor})}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Chat", {name: name, chatBackgroundColor: chatBackgroundColor})}>
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>
         </View>
