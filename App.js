@@ -19,14 +19,15 @@ import { initializeApp } from "firebase/app";
 
 const App = () => {
   // Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCzgT-IveScGSwOp-8W5SLP2jUAEfBtz-A",
-  authDomain: "shopping-list-demo-c7887.firebaseapp.com",
-  projectId: "shopping-list-demo-c7887",
-  storageBucket: "shopping-list-demo-c7887.appspot.com",
-  messagingSenderId: "941899882893",
-  appId: "1:941899882893:web:9f2366012636966a9c5dc4"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyAH5RyGo0uyczq-EJ1m5ETyobNNYLkaf2o",
+    authDomain: "chat-app-d8b63.firebaseapp.com",
+    projectId: "chat-app-d8b63",
+    storageBucket: "chat-app-d8b63.appspot.com",
+    messagingSenderId: "1077560553930",
+    appId: "1:1077560553930:web:7edcd7816b571ca1ca5f33"
+  };
+  
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -44,6 +45,10 @@ const app = initializeApp(firebaseConfig);
         <Stack.Screen 
           name="Chat"
           component={Chat}
+        />
+          <Stack.Screen
+          name="ShoppingLists"
+          component={ShoppingLists}
         />
       </Stack.Navigator>
     </NavigationContainer>
