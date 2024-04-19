@@ -4,6 +4,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Start from "./components/start";
 import Chat from "./components/chat";
 
+// Create the navigator //
+const Stack = createNativeStackNavigator();
+
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -12,7 +16,6 @@ import { initializeApp } from "firebase/app";
 // ***4.19.24 - below...firestore on CF assignment, but not listed on firebase database?///
 // import { getFirestore } from "firebase/firestore";
 
-const Stack = createNativeStackNavigator();
 
 const App = () => {
   // Your web app's Firebase configuration
@@ -27,6 +30,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// Initialize Cloud Firestore and get a reference to the service
+// const db = getFirestore(app);
 
   return (
     <NavigationContainer>
