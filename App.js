@@ -33,7 +33,7 @@ const App = () => {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
-// const db = getFirestore(app);
+const db = getFirestore(app);
 
   return (
     <NavigationContainer>
