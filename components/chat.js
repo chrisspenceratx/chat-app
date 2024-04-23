@@ -1,40 +1,39 @@
-import { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Platform, KeyboardAvoidingView } from "react-native";
+import { useState, useEffect, useCallback } from "react";
+import { StyleSheet, View, Platform, KeyboardAvoidingView } from "react-native";
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
+import { collection, getDocs, addDoc, onSnapshot, query, orderBy, where } from "firebase/firestore";
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route, navigation, db }) => {
   // extract props from navigation:
-  const { name, chatBackgroundColor } = route.params;
+  const { userID, name, chatBackgroundColor } = route.params;
 
   const [messages, setMessages] = useState([]);
 
+  // add a listener to the messages collection that will update the messages state when there are new messages
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "You have entered the chat",
-        createdAt: new Date(),
-        system: true,
-      },
-      {
-        _id: 2,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      }
-    ]);
+    navigation.setOptions({ title: name });
+
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const unsubMessages = onSnapshot(q, (docs) => {
+      let newMessages = [];
+      docs.forEach(doc => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: new Date()
+        })
+      });
+      setMessages(newMessages);
+    });
+
+    return () => {
+      if (unsubMessages) unsubMessages();
+    }
   }, []);
 
-  useEffect(() => {
-    navigation.setOptions({ title: name })
-  }, []);
-
+  // save sent message to Firestore database
   const onSend = (newMessages) => {
-    setMessages(previousMessages => GiftedChat.append(previousMessages, newMessages));
+    addDoc(collection(db, "messages"), newMessages[0]);
   };
 
   const renderBubble = (props) => {
@@ -42,7 +41,7 @@ const Chat = ({ route, navigation }) => {
       {...props}
       wrapperStyle={{
         right: {
-          backgroundColor: "#000"
+          backgroundColor: "#6C6A57"
         },
         left: {
           backgroundColor: "#FFF"
