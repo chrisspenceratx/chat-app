@@ -14,7 +14,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // ***4.19.24 - below...firestore on CF assignment, but not listed on firebase database?///
-// import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 
 const App = () => {
