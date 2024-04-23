@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Start from "./components/start";
@@ -16,6 +16,8 @@ import { initializeApp } from "firebase/app";
 // ***4.19.24 - below...firestore on CF assignment, but not listed on firebase database?///
 import { getFirestore } from "firebase/firestore";
 
+// ignore warning //
+LogBox.ignoreLogs(["AsyncStorage has been extracted from", "@firebase/auth", "You are initializing Firebase Auth"]);
 
 const App = () => {
   // Your web app's Firebase configuration
