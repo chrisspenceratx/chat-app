@@ -1,12 +1,33 @@
 import { useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, ImageBackground, Platform, KeyboardAvoidingView, Alert } from "react-native";
+import { getAuth, signInAnonymously } from "firebase/auth";
 
 const Start = ({ navigation }) => {
-  const [name, setName] = useState("");
-  const [chatBackgroundColor, setChatBackgroundColor] = useState("");
-  const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
+  // background image for start screen:
   const backgroundImage = require("../assets/BackgroundImage.png");
 
+  // initialize Firebase authentication handler
+  const auth = getAuth();
+  // allow anonymous sign in
+  const signInUser = () => {
+    signInAnonymously(auth)
+    .then(result => {
+      if (result.user.uid) {
+        navigation.navigate("Chat", { userID: result.user.uid, name: name, chatBackgroundColor: chatBackgroundColor });
+        Alert.alert("Signed in successfully!");
+      }
+    })
+    .catch((error) => {
+      Alert.alert("Unable to sign in.  Try again later.");
+    })
+  };
+
+  // pass user name from input to be the title of the chat screen
+  const [name, setName] = useState("");
+
+  // user can change the background color of the chat screen
+  const [chatBackgroundColor, setChatBackgroundColor] = useState("");
+  const colors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
   const handleSelection = (color) => {
     const colorIndex = colors.indexOf(color);
     const selectedColor = colors[colorIndex];
@@ -24,7 +45,7 @@ const Start = ({ navigation }) => {
         {/* White box containing input field, option to change chat background color, and button to enter chat */}
         <View style={styles.whiteBox}>
           <TextInput
-            style={[styles.text, styles.textInput]} 
+            style={[styles.text, styles.textInput]}
             value={name}
             onChangeText={setName}
             placeholder="Your Name"
@@ -37,6 +58,10 @@ const Start = ({ navigation }) => {
             {/* display a button for each color in the colors array: */}
             {colors.map((color) => (
               <TouchableOpacity 
+                accessible={true}
+                accessibilityLabel="Chat background color option"
+                accessibilityHint="Let's you change the background color of the chat screen."
+                accessibilityRole="imagebutton"
                 key={color} 
                 style={[styles.colorOptions, { backgroundColor: color }]}
                 onPress={() => handleSelection(color)}
@@ -45,7 +70,11 @@ const Start = ({ navigation }) => {
           </View>
 
           {/* button to enter chat: */}
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Chat", {name: name, chatBackgroundColor: chatBackgroundColor})}>
+          <TouchableOpacity 
+            accessible={true}
+            accessibilityRole="button"
+            style={styles.button} 
+            onPress={signInUser}>
             <Text style={styles.buttonText}>Start Chatting</Text>
           </TouchableOpacity>
         </View>
