@@ -24,7 +24,7 @@ const Start = ({ navigation }) => {
         {/* White box containing input field, option to change chat background color, and button to enter chat */}
         <View style={styles.whiteBox}>
           <TextInput
-            style={[styles.text, styles.textInput]}
+            style={[styles.text, styles.textInput]} 
             value={name}
             onChangeText={setName}
             placeholder="Your Name"
