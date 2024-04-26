@@ -55,7 +55,7 @@ const db = getFirestore(app);
         />
         <Stack.Screen name="Chat" >
           {props => <Chat 
-            isConnected={isConnected}
+            isConnected={connectionStatus.isConnected}
             db={db} 
             {...props} /> }
         </Stack.Screen> 
