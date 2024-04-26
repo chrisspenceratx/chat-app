@@ -28,7 +28,7 @@ const App = () => {
         enableNetwork(db);
       }
     }, [connectionStatus.isConnected]);
-    
+
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAH5RyGo0uyczq-EJ1m5ETyobNNYLkaf2o",
@@ -53,10 +53,12 @@ const db = getFirestore(app);
           name="Start"
           component={Start}
         />
-      <Stack.Screen name="Chat" >
-          {props => <Chat db={db} {...props} /> }
+        <Stack.Screen name="Chat" >
+          {props => <Chat 
+            isConnected={isConnected}
+            db={db} 
+            {...props} /> }
         </Stack.Screen> 
-        
       </Stack.Navigator>
     </NavigationContainer>
   );
