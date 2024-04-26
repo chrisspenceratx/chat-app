@@ -1,25 +1,34 @@
-import { StyleSheet, LogBox } from "react-native";
+import { useEffect } from "react";
+import { useNetInfo } from "@eact-native-community/netinfo";
+import { StyleSheet, LogBox, Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { initializeApp } from "firebase/app";
+import { getFirestore, disableNetwork, enableNetwork } from "firebase/firestore";
 import Start from "./components/start";
 import Chat from "./components/chat";
 
 // Create the navigator //
 const Stack = createNativeStackNavigator();
 
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// ***4.19.24 - below...firestore on CF assignment, but not listed on firebase database?///
-import { getFirestore } from "firebase/firestore";
-
 // ignore warning //
 LogBox.ignoreLogs(["AsyncStorage has been extracted from", "@firebase/auth", "You are initializing Firebase Auth"]);
 
 const App = () => {
+    // stat that represents network connectivity status, initializes as null
+    const connectionStatus = useNetInfo();
+
+    // alerts the user when the network connection is lost and prevents Firebase from trying to connect when no network is available
+    // enables Firebase to reconnect when network connection restored
+    useEffect(() => {
+      if (connectionStatus.isConnected === false) {
+        Alert.alert("Connection lost!");
+        disableNetwork(db);
+      } else if (connectionStatus.isConnected === true) {
+        enableNetwork(db);
+      }
+    }, [connectionStatus.isConnected]);
+    
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAH5RyGo0uyczq-EJ1m5ETyobNNYLkaf2o",
