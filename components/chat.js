@@ -65,6 +65,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
     addDoc(collection(db, "messages"), newMessages[0]);
   };
 
+  // render input toolbar and allow user to send messages if there's a network connection //
   const renderInputToolbar = (props) => {
     if (isConnected) return <InputToolbar {...props} />;
     else return null;
