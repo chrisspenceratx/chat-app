@@ -35,35 +35,33 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
   // save blob to Firebase Cloud Storage, get url and send url to Chat
   const uploadAndSendImage = async (imageURI) => {
     const uniqueRefString = generateReference(imageURI);
+    const newUploadRef = ref(storage, uniqueRefString);
     const response = await fetch(imageURI);
     const blob = await response.blob();
-    const newUploadRef = ref(storage, uniqueRefString);
     uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-      console.log("File has been uploaded successfully.");
-      const imageURL = await getDownloadURL(snapshot.ref);
-      onSend({ image: imageURL });
+      const imageURL = await getDownloadURL(snapshot.ref)
+      onSend({ image: imageURL })
     });
   }
 
-  // Expo ImagePicker requests user permission to access the device image library
-  // with permission, allows user to select an image from device
   const pickImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissions?.granted) {
       let result = await ImagePicker.launchImageLibraryAsync();
       if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
-    } else Alert.alert("Permissions haven't been granted.");
-  };
+      else Alert.alert("Permissions haven't been granted.");
+    }
+  }
 
-  // Expo ImagePicker requeusts user permission to use the device camera
-  // with permission, user can take a picture which will be sent to chat through uploadAndSendImage
   const takePhoto = async () => {
     let permissions = await ImagePicker.requestCameraPermissionsAsync();
     if (permissions?.granted) {
       let result = await ImagePicker.launchCameraAsync();
       if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
-    } else Alert.alert("Permissions hahven't been granted.");
-  };
+      else Alert.alert("Permissions haven't been granted.");
+    }
+  }
+
 
   // opens an options menu to allow users to select an action or cancel and close the menu
   const onActionPress = () => {
