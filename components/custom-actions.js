@@ -23,35 +23,36 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID })
   };
 
   // generate a timestamp reference for each image to be uploaded to Firebase Cloud Storage
-   const generateReference = (uri) => {
+  const generateReference = (uri) => {
     const timeStamp = (new Date()).getTime();
     const imageName = uri.split("/")[uri.split("/").length -1];
     return `${userID}-${timeStamp}-${imageName}`;
   };
 
-  // Expo ImagePicker requests user permission to access the device image library
-  // with permission, allows user to select an image from device and converts the image uri to a blob
-  // save image to Firebase Cloud Storage with unique name, get url and send url to Chat 
+  // Converts selected image uri to a blob with unique name
+  // save blob to Firebase Cloud Storage, get url and send url to Chat
+  const uploadAndSendImage = async (imageURI) => {
+    const uniqueRefString = generateReference(imageURI);
+    const response = await fetch(imageURI);
+    const blob = await response.blob();
+    const newUploadRef = ref(storage, uniqueRefString);
+    uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+      console.log("File has been uploaded successfully.");
+      const imageURL = await getDownloadURL(snapshot.ref);
+      onSend({ image: imageURL });
+    });
+  }
 
+  // Expo ImagePicker requests user permission to access the device image library
+  // with permission, allows user to select an image from device
   const pickImage = async () => {
     let permissions = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissions?.granted) {
       let result = await ImagePicker.launchImageLibraryAsync();
-      if (!result.canceled) {
-        const imageURI = result.assets[0].uri;
-        const uniqueRefString = generateReference(imageURI);
-        const response = await fetch(imageURI);
-        const blob = await response.blob();
-        const newUploadRef = ref(storage, uniqueRefString);
-        uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-          console.log("File has been uploaded successfully.");
-          const imageURL = await getDownloadURL(snapshot.ref);
-          onSend({ image: imageURL });
-        });
-      }
+      if (!result.canceled) await uploadAndSendImage(result.assets[0].uri);
     } else Alert.alert("Permissions haven't been granted.");
   };
-  
+
   const onActionPress = () => {
     const options = ["Choose from Library", "Take Picture", "Send Location", "Cancel"];
     const cancelButtonIndex = options.length - 1;
